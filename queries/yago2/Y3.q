@@ -4,4 +4,3 @@ SELECT ?name1 ?name2 WHERE{
     ?a1 <http://yago-knowledge.org/resource/actedIn> ?movie .
     ?a2 <http://yago-knowledge.org/resource/actedIn> ?movie .
 }
-#EOQ#
