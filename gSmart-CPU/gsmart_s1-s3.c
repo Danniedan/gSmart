@@ -109,7 +109,6 @@ int main(int argc, char** argv)
 	}
 	free(num_nonzeros);
 
-
 	    /* light query evaluation */
 
 	int *bind1 = (int *) malloc(maxl * sizeof(int));
