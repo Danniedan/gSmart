@@ -1,4 +1,5 @@
-SELECT ?v0 ?v2 ?v3 WHERE {
+SELECT ?v0 ?v2 ?v3 WHERE 
+{
 	?v0 <http://db.uwaterloo.ca/~galuc/wsdbm/subscribes> <http://db.uwaterloo.ca/~galuc/wsdbm/Website24> . 
 	?v2 <http://schema.org/caption> ?v3 . 
 	?v0 <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v2 . 
