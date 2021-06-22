@@ -7,4 +7,3 @@ SELECT ?GivenName ?FamilyName WHERE{
     ?p <http://yago-knowledge.org/resource/isMarriedTo> ?p2 .
     ?p2 <http://yago-knowledge.org/resource/wasBornIn> ?city .
 }
-#EOQ#
