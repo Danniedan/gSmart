@@ -1,5 +1,4 @@
-SELECT ?v0 
-WHERE {
+SELECT ?v0 WHERE {
 	?v0 <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v1 . 
 	?v0 <http://db.uwaterloo.ca/~galuc/wsdbm/friendOf> ?v2 . 
 	?v0 <http://purl.org/dc/terms/Location> ?v3 . 
@@ -7,4 +6,3 @@ WHERE {
 	?v0 <http://db.uwaterloo.ca/~galuc/wsdbm/gender> ?v5 . 
 	?v0 <http://xmlns.com/foaf/givenName> ?v6 . 
 }
-#EOQ#
