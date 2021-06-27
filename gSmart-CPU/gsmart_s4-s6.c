@@ -226,18 +226,18 @@ int main(int argc, char** argv)
 	
 
 	
-	int *bind1 = (int *) malloc(num_con*num_row * sizeof(int));
-	for(i=0; i<num_con*num_row; i++)
+    /* light query evaluation */
+  
+	int *bind1 = (int *) malloc(num_con*maxl_c * sizeof(int));
+	for(i=0; i<num_con*maxl_c; i++)
 		bind1[i] = 0;
 	int *Bp1 = (int *) malloc(num_con * sizeof(int));
 	for(i=0; i<(num_con); i++)
 		Bp1[i]=0;
 	
 	
-    /* light evaluation */
-  
-	//constants 183517,183423
-	int con[num_con] = {184898, 183402};
+	//constants 183423, 184898
+	int con[num_con] = {183517, 183402};
 	int con_pre[num_con] = {2, 0};
 	int flag;
 	if( ((Mc[con[0]+1]-Mc[con[0]])==1) && ((Mc[con[1]+1]-Mc[con[1]])==1) )
@@ -249,36 +249,27 @@ int main(int argc, char** argv)
 			{
 				if( pres_c[i]==con_pre[j] )
 				{
-					bind1[j*num_row+subs_c[i]] = 1;
+					bind1[j*maxl_c+k] = subs_c[i];
 					k++;
 				}
 			}
 			Bp1[j]=k;
 		}
 	}
+	k=Bp1[0];
 	
-	k=0;
-	for(i=0; i<num_row; i++)
-	{
-		if((bind1[i]==1)&&(bind1[num_row+i]==1))
-		{
-			bind1[k] = i;
-			k++;
-		}
-	}
-	Bp1[0]=k;
-	printf("k: %d\n", k);
 	
+	
+    /* main computation */
 	
 	int *bind2 = (int *) malloc(num_pre*k*maxl_r * sizeof(int));
 	int edge_pre[num_pre]={3, 1};
 	int ind[num_pre];
 	for(i=0; i<num_pre; i++)
 		ind[i]=0;
-	int p=0;
 	
 
-    /* evaluate 0th-level query edges */
+	//evaluate 0th-level query edges
 
 	for(i=0; i<k; i++)
 	{
@@ -311,8 +302,38 @@ int main(int argc, char** argv)
 			for(g=0; g<num_pre; g++)
 				ind[g] = 0;
 		}
+		
 	}
 	
+	
+	
+    /* local tree-pruning */
+	
+	int *bind3 = (int *) malloc(2*num_row * sizeof(int));
+	for(i=0; i<2*num_row; i++)
+		bind3[i] = 0;
+	int p=0;
+	
+	for(i=0; i<k; i++)
+	{
+		if(bind1[i]!=-1)
+		{
+			bind3[bind1[i]]=1;
+		}
+	}
+	for(i=0; i<Bp1[1]; i++)
+	{
+		bind3[num_row+bind1[maxl_c+i]]=1;
+	}
+	for(i=0; i<num_row; i++)
+	{
+		if((bind3[i]==1)&&(bind3[num_row+i]==1))
+		{
+			p++;
+			
+		}
+	}
+	printf("p=%d\n", p);
 
 	return 0;
 }
