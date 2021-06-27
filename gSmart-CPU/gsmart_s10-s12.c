@@ -55,8 +55,8 @@ int main(int argc, char** argv)
 	int sub, pre, ob;
 	g=0;
   
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fr, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<1; it++)
 		{
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzr=g;
 
 	if (fr !=stdin) fclose(fr);
@@ -150,8 +150,8 @@ int main(int argc, char** argv)
 
     /* read raw data for LSpM_CSC */
 	g=0;
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fc, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<3; it++)
 		{
@@ -164,7 +164,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzc=g;
 	printf("nzc=%d\n", nzc);
 	if (fc !=stdin) fclose(fc);
@@ -226,12 +226,10 @@ int main(int argc, char** argv)
 
     /* light query evaluation */
   
-	int *bind1;
-	cudaHostAlloc((int**)&bind1, num_con*maxl_c*sizeof(int), cudaHostAllocDefault);
+	int *bind1 = (int *) malloc(num_con*maxl_c * sizeof(int));
 	for(i=0; i<num_con*maxl_c; i++)
 		bind1[i] = 0;
-	int *Bp1;
-	cudaHostAlloc((int**)&Bp1, 2*num_con*sizeof(int), cudaHostAllocDefault);
+	int *Bp1 = (int *) malloc(2*num_con * sizeof(int));
 	for(i=0; i<(2*num_con); i++)
 	  Bp1[i]=0;
 
@@ -263,8 +261,7 @@ int main(int argc, char** argv)
 	
 	  /* main computation */
   
-	int *bind2;
-	cudaHostAlloc((int**)&bind2, num_pre*k*maxl_r*sizeof(int), cudaHostAllocDefault);
+	int *bind2 = (int *) malloc(num_pre*k*maxl_r * sizeof(int));
 	int edge_pre[num_pre]={2};
 	int ind[num_pre];
 	for(i=0; i<num_pre; i++)
@@ -273,8 +270,7 @@ int main(int argc, char** argv)
 		bind2[i]=-1;
 	
 	
-	int *bind2_op;
-	cudaHostAlloc((int**)&bind2_op, num_pre_op*k*maxl_c*sizeof(int), cudaHostAllocDefault);
+	int *bind2_op = (int *) malloc( num_pre_op*k*maxl_c * sizeof(int));
 	int edge_pre_op[num_pre_op]={0};
 	int ind_op[num_pre_op];
 	for(i=0; i<num_pre_op; i++)
@@ -353,8 +349,7 @@ int main(int argc, char** argv)
 	
     /* local tree-pruning */
   
-	int *bind3;
-	cudaHostAlloc((int**)&bind3, 2*num_row*sizeof(int), cudaHostAllocDefault);
+	int *bind3 = (int *) malloc( 2*num_row * sizeof(int));
 	for(i=0; i<2*num_row; i++)
 		bind3[i] = 0;
 		
