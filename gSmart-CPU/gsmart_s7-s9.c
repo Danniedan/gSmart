@@ -14,22 +14,21 @@ const int num_pre = 3;
 
 int main(int argc, char** argv)
 {
-  struct timeval startt;
-  struct timeval endt;
-  unsigned long timer;
-	
-  FILE *fr, *fc;
-  int M;
+	struct timeval startt;
+	struct timeval endt;
+	unsigned long timer;
+
+	FILE *fr, *fc;
+	int M;
 	int N;
 	long nnz, i, j, it, nzr, nzc;	
   
-  float milliseconds = 0;
 
 	char * filename1="./data/wat100r_s7.txt";
 	char * filename2="./data/wat100c_s7.txt";
 
-    if ((fr = fopen(filename1, "r")) == NULL) 
-            exit(1);
+	if ((fr = fopen(filename1, "r")) == NULL) 
+		exit(1);
 	
 	fscanf(fr, "%d	%d	%ld", &(M), &(N), &(nnz));
 
@@ -52,8 +51,8 @@ int main(int argc, char** argv)
 	int sub, pre, ob;
 	g=0;
 
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fr, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<3; it++)
 		{
@@ -66,9 +65,8 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzr=g;
-	printf("nzr=%d\n", nzr);
 
 	if (fr !=stdin) fclose(fr);
 	
@@ -146,8 +144,8 @@ int main(int argc, char** argv)
   
     /* read raw data */
 	g=0;
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fc, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<1; it++)
 		{
@@ -160,7 +158,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzc=g;
 	if (fc !=stdin) fclose(fc);
 	
