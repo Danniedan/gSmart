@@ -1,15 +1,10 @@
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "device_functions.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <math.h>
-#include <omp.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -19,21 +14,22 @@ const int num_pre = 2;
 
 int main(int argc, char** argv)
 {
-  struct timeval startt;
-  struct timeval endt;
-  unsigned long timer;
+	struct timeval startt;
+	struct timeval endt;
+	unsigned long timer;
 
-  
-  FILE *fr, *fc;
-  int M;
-  int N;
 
-  long nnz, i, j, it, nzr, nzc;	
+	FILE *fr, *fc;
+	int M;
+	int N;
+
+	long nnz, i, j, it, nzr, nzc;	
 	
 	char * filename1="./data/wat100r_s13.txt";
 	char * filename2="./data/wat100c_s13.txt";
 
-    if ((fr = fopen(filename1, "r")) == NULL) 
+
+	if ((fr = fopen(filename1, "r")) == NULL) 
             exit(1);
 	
 	fscanf(fr, "%d	%d	%ld", &(M), &(N), &(nnz));
@@ -59,8 +55,8 @@ int main(int argc, char** argv)
 	int sub, pre, ob;
 	g=0;
 
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fr, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<2; it++)
 		{
@@ -73,7 +69,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzr=g;
 
 	if (fr !=stdin) fclose(fr);
@@ -153,9 +149,9 @@ int main(int argc, char** argv)
   
     /* LSpM_CSC storing */
   
-  g=0;
-  for (i=0; i<nnz; i++)
-  {
+	g=0;
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fc, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<2; it++)
 		{
@@ -168,7 +164,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzc=g;
 	if (fc !=stdin) fclose(fc);
   
@@ -236,7 +232,7 @@ int main(int argc, char** argv)
 	int flag;
 	if( ((Mc[con[0]+1]-Mc[con[0]])==1) && ((Mc[con[1]+1]-Mc[con[1]])==1) )
 	{
-    for(j=0; j<num_con; j++)
+		for(j=0; j<num_con; j++)
 		{
 			k=0;
 			for(i=Ap_c[Mc[con[j]]]; i<Ap_c[Mc[con[j]]+1]; i++)
