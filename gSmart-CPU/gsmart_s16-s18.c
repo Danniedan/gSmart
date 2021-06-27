@@ -1,7 +1,4 @@
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "device_functions.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -9,101 +6,20 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
-#include <omp.h>
-#include <math.h>
 #include <stdbool.h>
 
 const int num_con = 1;
 const int num_pre = 2;
 
 
-__global__ void SPMV(int NUM_THREAD, int k, int maxl_r, int* Ap_r, int* Mr, int* pres_r, int* obs_r, int* bind1, int* bind2)
-//__global__ void SPMV(int NUM_THREAD, int p, int k, int maxl, int* Ap, int* Mr, int* pres, int* obs, int* Bp2, int* bind1, int* bind2)
-{
-	int idx = blockDim.x * blockIdx.x + threadIdx.x;
-	int edge_pre[num_pre]={1, 2};
-	int ind[num_pre]={0, 0};
-	if (idx < NUM_THREAD) {
-		int i, j, g, it, flag;
-		int start, end;
-		start = k*idx/NUM_THREAD;
-		end = k*(idx+1)/NUM_THREAD;
-		//start = p+k*idx/NUM_THREAD;
-		//end = p+k*(idx+1)/NUM_THREAD;
-		
-		for(i=start; i<end; i++)
-		{
-			//printf("i=%d\n", i);
-		
-			for(g=0; g<num_pre; g++)
-			{
-				flag=0;
-				if( (Mr[bind1[i]+1]-Mr[bind1[i]])==1 )
-				{
-					//printf("sub=%d\n", bind[i]);
-					for(j=Ap_r[Mr[bind1[i]]]; j<Ap_r[Mr[bind1[i]]+1]; j++)
-					{
-						if( (pres_r[j]==edge_pre[g]) )
-						{
-							//printf("pres_r[%d] = %d, edge_pre[%d] = %d\n", j, pres_r[j], g, edge_pre[g]);
-							bind2[i*num_pre*maxl_r+g*maxl_r+ind[g]] = obs_r[j];
-							ind[g]++;
-							flag=1;
-						}
-					}
-					if(flag==0)
-					{
-						bind1[i] = -1;
-						//Bp1[0]--;
-						for(it=0; it<g; it++)
-							ind[it] = 0;
-						break;
-					}
-					
-				}
-			}
-			if(flag==1)
-			{
-				//printf("i=%d: ", i);
-				//for(g=0; g<num_pre; g++)
-				{
-					//Bp2[g*k+i] = ind[g];
-					//printf("Bp2[%d]=%d\n", 2*2*p+2*g+1, Bp2[2*2*p+2*g+1]);
-				}
-				for(g=0; g<num_pre; g++)
-					ind[g] = 0;
-			}	
-		}
-	}
-}
-
-int com(double* A, double* B, int num) {
-	int flag = 1;
-	for (int i = 0; i < num; i++) {
-		if (fabs(A[i] - B[i]) > 0.00001) {
-			printf("%lf %lf %d\n", A[i], B[i], i);
-			flag = 0;
-		}
-	}
-	return flag;
-}
-
-int compare(int* A, int* B, int num) {
-	for (int i = 0; i < num; i++) {
-		if (A[i] != B[i])
-			return 0;
-	}
-	return 1;
-}
-
 int main(int argc, char** argv)
 {
-  struct timeval startt;
-  struct timeval endt;
-  unsigned long timer;
+	struct timeval startt;
+	struct timeval endt;
+	unsigned long timer;
 
-  FILE *fr, *fc;
-  int M;
+	FILE *fr, *fc;
+	int M;
 	int N;
 	long nnz, i, j, it, nzr, nzc;	
 	int round;
@@ -112,8 +28,8 @@ int main(int argc, char** argv)
 	char * filename1="./data/wat100r_s7.txt";
 	char * filename2="./data/wat100c_s7.txt";
 
-  if ((fr = fopen(filename1, "r")) == NULL) 
-    exit(1);
+	if ((fr = fopen(filename1, "r")) == NULL) 
+	  exit(1);
 	
 	fscanf(fr, "%d	%d	%ld", &(M), &(N), &(nnz));
 	
@@ -136,8 +52,8 @@ int main(int argc, char** argv)
 	int sub, pre, ob;
 	g=0;
 
-  for (i=0; i<nnz; i++)
-  {
+	  for (i=0; i<nnz; i++)
+	  {
 		fscanf(fr, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<2; it++)
 		{
@@ -150,7 +66,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+  	}
 	nzr=g;
 	
 	if (fr !=stdin) fclose(fr);
@@ -159,7 +75,7 @@ int main(int argc, char** argv)
     /* LSpM_CSR storing */
   
 	int num_r;
-	int *num_nonzeros=(int *) malloc(num_row * sizeof(int));
+	int *num_nonzeros = (int *) malloc(num_row * sizeof(int));
 	for(i=0; i<num_row; i++)
 		num_nonzeros[i]=0;
 	int sum=0;
@@ -189,8 +105,7 @@ int main(int argc, char** argv)
 	num_r=g;
 
 	
-	int* Ap_r;
-	cudaHostAlloc((int**)&Ap_r, (num_r+1) * sizeof(int), cudaHostAllocDefault);
+	int* Ap_r = (int *) malloc((num_r+1) * sizeof(int));
 	int maxl_r=0;
 	Ap_r[0]=0;
 	sum=0;
@@ -230,9 +145,9 @@ int main(int argc, char** argv)
   
     /* LSpM_CSC storing */
   
-  g=0;
-  for (i=0; i<nnz; i++)
-  {
+	g=0;
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(fc, "%d	%d	%d", &(sub), &(pre), &(ob));
 		for(it=0; it<1; it++)
 		{
@@ -245,7 +160,7 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
-  }
+	}
 	nzc=g;
 	if (fc !=stdin) fclose(fc);
 	
@@ -375,7 +290,7 @@ int main(int argc, char** argv)
 			for(g=0; g<num_pre; g++)
 				ind[g] = 0;
 		}
-  }
+	}
 
 	
 	
