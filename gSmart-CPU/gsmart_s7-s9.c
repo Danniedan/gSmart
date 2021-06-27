@@ -25,8 +25,8 @@ int main(int argc, char** argv)
   
   float milliseconds = 0;
 
-	char * filename1="/root/cyd/data/wat100r_s7.txt";
-	char * filename2="/root/cyd/data/wat100c_s7.txt";
+	char * filename1="./data/wat100r_s7.txt";
+	char * filename2="./data/wat100c_s7.txt";
 
     if ((fr = fopen(filename1, "r")) == NULL) 
             exit(1);
@@ -249,7 +249,9 @@ int main(int argc, char** argv)
 	}
 	
 	
-  	/* evaluate 0th-level query edges */
+	
+	/* main compuation */
+  	// evaluate 0th-level query edges
 
 	int *bind2 = (int *) malloc(num_pre*k*maxl_r * sizeof(int));
 	int edge_pre[num_pre]={0, 2, 3};
