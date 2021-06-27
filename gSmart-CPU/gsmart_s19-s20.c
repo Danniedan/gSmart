@@ -1,15 +1,10 @@
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "device_functions.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <math.h>
-#include <omp.h>
 #include <math.h>
 #include <stdbool.h>
 
