@@ -13,24 +13,24 @@ int main(int argc, char** argv)
 {
 
 	struct timeval startt;
-  struct timeval endt;
-  unsigned long timer;
-	
-  FILE *f, *fw;
-  int M;
+	struct timeval endt;
+	unsigned long timer;
+
+	FILE *f, *fw;
+	int M;
 	int N;
 	long nz, i, j, it;	
 	
-  float milliseconds = 0;
+	float milliseconds = 0;
 
-	char * filename="/root/cyd/data/watdiv100_s1.txt";
+	char * filename="./data/watdiv100_s1.txt";
 
-  if ((f = fopen(filename, "r")) == NULL)
-    exit(1);
+	if ((f = fopen(filename, "r")) == NULL)
+		exit(1);
 	
 	fscanf(f, "%d	%d	%ld", &N, &M, &nz);
 	
-  int num_row;
+	int num_row;
 	num_row=N;
 	int num_column;
 	num_column=M;
@@ -46,10 +46,10 @@ int main(int argc, char** argv)
 	
 	long g;
 
-  for (i=0; i<nnz; i++)
-  {
+	for (i=0; i<nnz; i++)
+	{
 		fscanf(f, "%d	%d	%d", &(subs[i]), &(pres[i]), &(obs[i]));
-  }
+	}
 
 	if (f !=stdin) fclose(f);
 	
@@ -131,9 +131,8 @@ int main(int argc, char** argv)
 	printf("k: %d\n", k);
 	
 	
-	
-	    /* evaluate 0th-level query edges */
-  
+	 /* main computation */
+	//evaluate 0th-level query edges
   
 	int *bind2 = (int *) malloc(8*k*maxl * sizeof(int));
 	int edge_pre[8]={0, 1, 2, 6, 4, 3, 5, 7};
@@ -161,14 +160,14 @@ int main(int argc, char** argv)
 				{
 					bind1[i]=-1;
 					for(it=0; it<g; it++)
-            ind[it] = 0;
+						ind[it] = 0;
 					break;
 				}
 				
 			}
 		}
 		if(flag==1)
-    {
+		{
 			for(g=0; g<8; g++)
 				ind[g] = 0;
 		}
